@@ -1,0 +1,48 @@
+%% MATLAB CODE FOR ASSIGNMENT 04
+close all
+clear
+clc
+%% Loading Data
+load fisheriris
+Data=meas;
+[r,~]=size(Data);
+
+%% Saving the Pierson's correlation coefficient in PCC
+PCC=zeros(r);
+ for i=1:r
+     for j=1:r
+        PCC(i,j)=1-pdist2(Data(i,:),Data(j,:),'correlation');
+     end
+ end
+ 
+ %% Setting all the values to 1 and 0 w.r.t mean in pccmeans
+pccmean=mean(PCC);
+pccmeans=zeros(size(PCC));
+for k=1:r
+  for m=1:r
+   if PCC(m,k)>pccmean(1,m)
+      pccmeans(m,k)=1;
+   end
+  end
+end
+
+%%  Setting all the values to 1 and 0 w.r.t median in pccmedians
+pccmedian=median(PCC);
+pccmedians=zeros(size(PCC));
+for k=1:r
+  for m=1:r
+   if PCC(m,k)>pccmedian(1,m)
+      pccmedians(m,k)=1;
+   end
+  end
+end
+
+%% Creating bitmap
+imagesc(pccmeans)
+title('Bit-map using Mean');
+figure
+imagesc(pccmedians)
+title('Bit-map using Median');
+
+%% clearing variables
+clear i j k m meas r species
